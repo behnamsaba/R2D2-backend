@@ -4,7 +4,7 @@ R2D2 Prototype
 
 ## Description
 
-This project is a [Python](https://www.python.org/) application that does XYZ. It is built using the Flask framework and utilizes the Langchain library for interaction with openAI API.
+This project is a [Python](https://www.python.org/) application that does interaction with openAi API. It is built using the Flask framework and utilizes the Langchain library for interaction with openAI API and React router version 6 for client-side.
 
 ## Installation
 
