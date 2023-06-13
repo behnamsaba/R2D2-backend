@@ -1,7 +1,9 @@
 # Project Name
 
 R2D2 Prototype
-
+- Click [here](https://r2d2-prototype.onrender.com/) to explore the live project. (deployed on render.com)
+- Click [here](https://r2d2-backend.onrender.com) to access backend api.
+- Click [here](https://github.com/behnamsaba/R2D2-Client-side) to access front-end codes.
 ## Description
 
 This project is a [Python](https://www.python.org/) application that does interaction with openAi API. It is built using the Flask framework and utilizes the Langchain library for interaction with openAI API and React router version 6 for client-side.
