@@ -5,11 +5,15 @@ from flask import Flask, jsonify, request, make_response
 from flask_debugtoolbar import DebugToolbarExtension
 import os
 import openai
-from apikey import apikey
 from flask_cors import CORS
 import logging
+from dotenv import load_dotenv
+import os
 
-os.environ["OPENAI_API_KEY"] = apikey
+# Load the environment variables from the .env file
+load_dotenv()
+
+OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
 
 app = Flask(__name__)
 logger = logging.getLogger(__name__)
