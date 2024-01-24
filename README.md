@@ -28,6 +28,8 @@ This project is a [Python](https://www.python.org/) application that does intera
 The project has the following dependencies:
 
 - Flask: A micro web framework for building web applications in Python. Version 2.3.2.
-- Langchain: A library for language processing and analysis. Version 0.0.194.
+- Langchain: A library for language processing and analysis. Version 0.1.13.
+- openai: openai API framework. Version 1.9.0.
+- Langchain-Openai Version 0.0.3.
 
 For a complete list of dependencies, please refer to the `requirements.txt` file.
