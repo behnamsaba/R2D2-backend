@@ -1,7 +1,9 @@
 # Project Name
 
 R2D2 Prototype
-
+- Click [here](https://r2d2-prototype.onrender.com/) to explore the live project. (deployed on render.com)
+- Click [here](https://r2d2-backend.onrender.com) to access backend api.
+- Click [here](https://github.com/behnamsaba/R2D2-Client-side) to access front-end codes.
 ## Description
 
 This project is a [Python](https://www.python.org/) application that does interaction with openAi API. It is built using the Flask framework and utilizes the Langchain library for interaction with openAI API and React router version 6 for client-side.
@@ -19,7 +21,7 @@ This project is a [Python](https://www.python.org/) application that does intera
 1. Set up the necessary environment variables or configuration files.
 2. Run the application: `python app.py`
 3. Open your web browser and access the application at [http://127.0.0.1:5000](http://127.0.0.1:5000).
-4. Put openAi API password inside apikey.py
+4. Put openAi API password inside .env.
 
 ## Dependencies
 
@@ -29,4 +31,3 @@ The project has the following dependencies:
 - Langchain: A library for language processing and analysis. Version 0.0.194.
 
 For a complete list of dependencies, please refer to the `requirements.txt` file.
-
