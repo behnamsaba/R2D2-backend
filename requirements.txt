@@ -41,7 +41,6 @@ numpy==1.24.3
 openai==1.9.0
 openapi-schema-pydantic==1.2.4
 packaging==23.2
-pkg_resources==0.0.0
 pydantic==1.10.9
 python-dotenv==1.0.0
 PyYAML==6.0
