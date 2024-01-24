@@ -2,7 +2,6 @@
 
 R2D2 Prototype
 - Click [here](https://r2d2-prototype.onrender.com/) to explore the live project. (deployed on render.com)
-- Click [here](https://r2d2-backend.onrender.com) to access backend api.
 - Click [here](https://github.com/behnamsaba/R2D2-Client-side) to access front-end codes.
 ## Description
 
