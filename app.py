@@ -1,6 +1,6 @@
-from langchain.llms import OpenAI
+from langchain_openai import OpenAI #to integrate with openAI api with langchain
 from langchain.prompts import PromptTemplate
-from langchain.chains import LLMChain, SimpleSequentialChain
+from langchain.chains import LLMChain, SimpleSequentialChain #LLMCHAIN allow us to run our topic through our prompt and then genretate output
 from flask import Flask, jsonify, request, make_response
 from flask_debugtoolbar import DebugToolbarExtension
 import os
@@ -21,8 +21,9 @@ CORS(app)
 debug = DebugToolbarExtension(app)
 
 
-# LLM Templates
+# LLM Templates => prompt template pass user input to larger piece of text, we dont need to write whole command!
 
+# Market Research template (questions from openAI)
 competitors_template = PromptTemplate(
     input_variables=["company"],
     template="provide me a list of companies that are competitors of {company}",
@@ -33,12 +34,13 @@ products_template = PromptTemplate(
     template="generate a detailed comparative analysis report on {company} products",
 )
 
-
+# Personalize email template
 personalize_template = PromptTemplate(
     input_variables=["email"],
     template="rewrite this for in a way to maximize response or closing deals: {email}",
 )
 
+#CRM template
 welcome_template = PromptTemplate(
     input_variables=["customerName", "productName"],
     template="Create a Customer Service Welcome Message for {customerName} to introduce {productName}",
@@ -49,6 +51,7 @@ followup_template = PromptTemplate(
     template="Create a sales follow up for {prospectName} with the folowing reasons {followUpReason} and persoanlize with:{note}",
 )
 
+# Marketing template
 caption_template = PromptTemplate(
     input_variables=["postContent", "postTone"],
     template="Write a social media caption for {postContent} with an {postTone} tone",
@@ -60,25 +63,26 @@ create_post_template = PromptTemplate(
 )
 
 
-# Market Research
+# Market Research route
 @app.route("/api/market-research", methods=["POST"])
 def market_research():
     user_prompt = request.json["prompt"]
     llm = OpenAI(temperature=0.9)
     companies_chain = LLMChain(llm=llm, prompt=competitors_template)
     details_chain = LLMChain(llm=llm, prompt=products_template)
-    api_respond_companies = companies_chain.run(user_prompt)
-    api_respond_details = details_chain.run(api_respond_companies)
-    
-    # WE COULD ALSO CHAIN BOTH OF CHAINS
+    api_respond_companies = companies_chain.invoke(user_prompt)
+    api_respond_details = details_chain.invoke(api_respond_companies)
+
+    # WE COULD ALSO CHAIN BOTH OF CHAINS, didnt use this approach because of delay => cause flask time out and sometimes not good enouhgh answer
+    #possiable solution => redis
     # sequential_chain = SimpleSequentialChain(chains=[companies_chain, details_chain])
     # response = sequential_chain.run(user_prompt)
 
     return jsonify(
         {
             "id": user_prompt,
-            "competitors": api_respond_companies.strip(),
-            "analyze": api_respond_details.strip(),
+            "competitors": api_respond_companies,
+            "analyze": api_respond_details,
         }
     )
 
@@ -89,7 +93,7 @@ def personalize_email():
     user_prompt = request.json["prompt"]
     llm = OpenAI(temperature=0.9)
     personalize_chain = LLMChain(llm=llm, prompt=personalize_template)
-    api_respond = personalize_chain.run(user_prompt)
+    api_respond = personalize_chain.invoke(user_prompt)
     return jsonify({"data": api_respond})
 
 
@@ -116,11 +120,11 @@ def welcome_customer_request(req):
     try:
         llm = OpenAI(temperature=0.9)
         CRM_chain = LLMChain(llm=llm, prompt=welcome_template)
-        api_respond = CRM_chain.run(
+        api_respond = CRM_chain.invoke(
             {"customerName": customer_name, "productName": product_name}
         )
         logger.info(api_respond)
-        return jsonify({"data": api_respond.strip()})
+        return jsonify({"data": api_respond})
     except Exception as e:
         logger.error(
             f"Error occurred while processing the customer product request: {str(e)}"
@@ -135,16 +139,16 @@ def followup_request(req):
     try:
         llm = OpenAI(temperature=0.9)
         CRM_chain = LLMChain(llm=llm, prompt=followup_template)
-        api_respond = CRM_chain.run(
+        api_respond = CRM_chain.invoke(
             {
                 "prospectName": prospect_name,
                 "followUpReason": follow_reason,
                 "note": note,
             }
         )
-        logger.info(api_respond.strip())
+        logger.info(api_respond)
         print(api_respond)
-        return jsonify({"data": api_respond.strip()})
+        return jsonify({"data": api_respond})
     except Exception as e:
         logger.error(
             f"Error occurred while processing the customer product request: {str(e)}"
@@ -175,12 +179,12 @@ def caption_create(req):
     try:
         llm = OpenAI(temperature=0.9)
         marketing_chain = LLMChain(llm=llm, prompt=caption_template)
-        api_respond = marketing_chain.run(
+        api_respond = marketing_chain.invoke(
             {"postContent": post_content, "postTone": post_tone}
         )
         logger.info(api_respond)
         print(api_respond)
-        return jsonify({"data": api_respond.strip()})
+        return jsonify({"data": api_respond})
     except Exception as e:
         logger.error(
             f"Error occurred while processing the customer product request: {str(e)}"
@@ -195,16 +199,16 @@ def create_post(req):
     try:
         llm = OpenAI(temperature=0.9)
         marketing_chain = LLMChain(llm=llm, prompt=create_post_template)
-        api_respond = marketing_chain.run(
+        api_respond = marketing_chain.invoke(
             {
                 "platform": platform,
                 "postObjective": post_objective,
                 "postContent": post_contet,
             }
         )
-        logger.info(api_respond.strip())
+        logger.info(api_respond)
         print(api_respond)
-        return jsonify({"data": api_respond.strip()})
+        return jsonify({"data": api_respond})
     except Exception as e:
         logger.error(
             f"Error occurred while processing the customer product request: {str(e)}"
