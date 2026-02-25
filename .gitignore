@@ -1,4 +1,6 @@
 __pycache__/
 apikey.py
 /venv
+.venv/
 .env
+*.sqlite3
